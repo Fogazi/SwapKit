@@ -1,6 +1,5 @@
 # SwapKit
 # Fogazi's Kit Swapping script for DayZ Epoch/Overpoch
-	~~~~java
 ////////////////////////////////////////////////////////
 //                                                    //
 //        Swap Kit Script - Created by Fogazi         //
@@ -8,7 +7,6 @@
 //                      v1.2                          //
 //                                                    //
 ////////////////////////////////////////////////////////
-	~~~~
 The following script gives you the option to swap your kit with a dead AI or Player. No longer do you need to access the gear menu and slowly transfer all the items 1 at a time.
 This is especially helpful in those situations where you are gunned down, spawn back in and get back to your corpse and swap your default spawn kit out for your original kit.
 If you want to limit this script to only be able to swap kit with the players own dead body, scroll to the bottom for the change in code.
