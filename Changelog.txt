@@ -1,0 +1,17 @@
+v1.2
+Change priority of addAction so that it is the last option on the list preventing inadvertent selection.
+Added option to only swap kit with players own dead body.
+
+v1.1
+Tidied up and cleared a lot of unnecessary code.
+
+v1.0 - Release
+Swap kit script that takes the kit of a dead body be it AI or player.
+Wipes current kit.
+Creates grave with cross in position of body.
+
+
+Future Plans
+Place current kit onto corpse of dead body.
+Incorporate use of ZSC wallets/coins.
+Clean up script.
