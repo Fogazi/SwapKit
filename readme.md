@@ -1,4 +1,4 @@
-# Fogazi's Kit Swapping script for DayZ Epoch/Overpoch
+## Fogazi's Kit Swapping script for DayZ
 `////////////////////////////////////////////////////////
 //                                                    //
 //        Swap Kit Script - Created by Fogazi         //
