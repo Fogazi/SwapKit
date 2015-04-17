@@ -6,7 +6,7 @@
 //                                                    //
 ////////////////////////////////////////////////////////
 
-private["_body", "_isBuried", "_grave", "_graveCross", "_bodyBp", "_bpWpns", "_bp_Mags"];
+private["_body", "_isBuried", "_grave", "_graveCross", "_bodyBp", "_bodyWp", "_bodyMags", "_bpWpns", "_bp_Mags"];
 _body = _this select 3;
 _isBuried = _body getVariable ["isBuried", false];
 _hasHarvested = _body getVariable["meatHarvested",false];
@@ -15,6 +15,40 @@ _plr = player;
 	
 _plr removeAction s_player_swap_human;
 s_player_swap_human = -1;
+
+fnc_unit_addWeapons = {
+	private["_array","_count","_weaponCount","_gunslot"];
+	_array = _this select 1;
+	
+	_unit = _array select 0;
+	_count = _array select 1;
+	
+	_weaponCount = 0;
+	
+	
+	for [{_i=0}, {_i < count _count}, {_i = _i + 1}] do {
+			_gunslot = _count select _weaponCount;
+			_plr addWeapon _gunslot;
+			_weaponCount = _weaponCount + 1;
+		};
+};
+
+fnc_unit_addMagazines = {
+	private["_array","_count","_magazineCount","_magslot"];
+	_array = _this select 1;
+	
+	_unit = _array select 0;
+	_count = _array select 1;
+	
+	_magazineCount = 0;
+	
+	
+	for [{_i=0}, {_i < count _count}, {_i = _i + 1}] do {
+			_magslot = _count select _magazineCount;
+			_plr addMagazine _magslot;
+			_magazineCount = _magazineCount + 1;
+		};
+};
 
 if (!_isBuried) then {
 	if (!_hasHarvested) then {
@@ -29,29 +63,51 @@ if (!_isBuried) then {
 			_bpWpns = getWeaponCargo unitBackpack _body;
 			_bp_Mags = getMagazineCargo unitBackpack _body;
 		};
+
+		
+		//Gather information first, then remove, then add
+		_bodyMags = magazines _plr;
+		_bodyWp = weapons _plr;
+		
+		_plrMagazines = magazines _body;
+		_plrWeapons = weapons _body;
 		
 		removeBackpack _plr;
 		removeAllItems _plr;
 		removeAllWeapons _plr;
 		
+		removeBackpack _body;
+		removeAllItems _body;
+		removeAllWeapons _body;
+		
+		//Add Magazines from Player to Body and from Body to Player
+		[_body,_bodyMags] call fnc_unit_addMagazines;
+		[_plr,_plrMagazines] call fnc_unit_addMagazines;
+		
+		//Add Weapons from Player to Body and from Body to Player
+		[_body,_bodyWp] call fnc_unit_addWeapons;
+		[_plr,_plrWeapons] call fnc_unit_addWeapons;
+		
 		_plr addBackpack _bodyBp;
 		_bp = unitBackpack _plr;
 		
-		_plrMagazines = magazines _body;
-		_plrWeapons = weapons _body;
-		
+		/**
 		_magazineCount = 0;
 		for [{_i=0}, {_i < count _plrMagazines}, {_i = _i + 1}] do {
 			_magslot = _plrMagazines select _magazineCount;
 			_plr addMagazine _magslot;
 			_magazineCount = _magazineCount + 1;
 		};
+		**/ 
+		/**
 		_weaponCount = 0;
 		for [{_i=0}, {_i < count _plrWeapons}, {_i = _i + 1}] do {
 			_gunslot = _plrWeapons select _weaponCount;
 			_plr addWeapon _gunslot;
 			_weaponCount = _weaponCount + 1;
 		};
+		**/
+		
 		if((primaryWeapon _plr) != "") then {
 			private["_type", "_muzzles"];
 			_type = primaryWeapon _plr;
@@ -88,7 +144,7 @@ if (!_isBuried) then {
 		};
 		sleep 4;
 		_position = getPosASL _body;
-		deleteVehicle _body;
+		//deleteVehicle _body;
 		_grave = createVehicle ["Grave", _position, [], 0, "CAN_COLLIDE"];
 		_grave setpos [(getposASL _grave select 0),(getposASL _grave select 1), 0];
 		_graveCrosstype = ["GraveCross1","GraveCross2","GraveCrossHelmet"]  call BIS_fnc_selectRandom;
